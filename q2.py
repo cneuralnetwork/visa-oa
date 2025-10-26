@@ -21,3 +21,56 @@ for c in cmds:
 	else:
 		ans.append(c)
 print("/"+"/".join(ans))
+
+
+
+-------------java-----------
+
+import java.util.*;
+
+public class cd {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        sc.nextLine(); // consume the newline
+
+        String[] arr = new String[n];
+        for(int i=0;i<n;i++){
+            arr[i]=sc.nextLine();
+        }
+
+        Stack<String> s = new Stack<>();
+
+        for(int i=0;i<n;i++){
+            String[] parts = arr[i].split(" ");
+            String command = parts[1];
+
+            if(command.equals("/")){
+                s.clear();
+            }
+            else if(command.equals("..")){
+                if(!s.isEmpty()){
+                    s.pop();
+                }
+            }
+            else if(command.equals(".")){
+                continue;
+            }
+            else{
+                s.push(command);
+            }
+        }
+
+        if(s.isEmpty()){
+            System.out.println("/");
+        }
+        else{
+            StringBuilder sb = new StringBuilder();
+            for(String dir : s){
+                sb.append("/").append(dir);
+            }
+            System.out.println(sb.toString());
+        }
+        
+    }
+}
