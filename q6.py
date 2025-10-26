@@ -34,3 +34,105 @@
 # Input: n = 3, m = 3, obstacles = [[2, 1]], teleports = [[0, 1, 2, 0]]
 # Output: -1
 # Explanation: You are unable to reach the exit because of an obstacle.
+
+
+
+
+import java.util.*;
+
+public class labyrinth {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        while (t-- > 0) {
+            System.out.println("Enter rows and columns:");
+            int n = sc.nextInt();
+            int m = sc.nextInt();
+
+            System.out.println("Enter no. of obstacles:");
+            int obstacles = sc.nextInt();
+            int[][] obsArray = new int[obstacles][2];
+            System.out.println("Enter obstacle positions:");
+            for (int i = 0; i < obstacles; i++) {
+                obsArray[i][0] = sc.nextInt();
+                obsArray[i][1] = sc.nextInt();
+            }
+
+            System.out.println("Enter no of teleport");
+            int teleports = sc.nextInt();
+            int[][] teleArray = new int[teleports][4];
+            System.out.println("Enter teleport positions:");
+            for (int i = 0; i < teleports; i++) {
+                teleArray[i][0] = sc.nextInt();
+                teleArray[i][1] = sc.nextInt();
+                teleArray[i][2] = sc.nextInt();
+                teleArray[i][3] = sc.nextInt();
+            }
+
+            int result = solve(n, m, obsArray, teleArray);
+            System.out.println(result);
+
+
+        }
+    }
+
+        private static int solve(int n,int m, int[][] obsArray, int[][] teleArray){
+            boolean[][] obstacle = new boolean[n][m];
+
+            for(int i=0;i<obsArray.length;i++){
+                int row=obsArray[i][0];
+                int col=obsArray[i][1];
+                obstacle[row][col]=true;
+            }
+
+            Map<String, int[]> teleportMap = new HashMap<>();
+            for(int i=0;i<teleArray.length;i++){
+                int r1=teleArray[i][0];
+                int c1=teleArray[i][1];
+                int r2=teleArray[i][2];
+                int c2=teleArray[i][3];
+                teleportMap.put(r1 + "," + c1, new int[]{r2, c2});
+            }
+
+            Set<String> teleportVis = new HashSet<>();
+
+            int r = 0, c = 0;
+            int steps = 0;
+
+            while(true){
+                if(r == n-1 && c == m-1){
+                    return steps;
+                }
+
+                int newr = r , newc = c+1;  //right move
+
+                if( newc >= m || obstacle[newr][newc]){
+                    newr = r+1;
+                    newc = c;  //down move
+                    if(newr >= n || obstacle[newr][newc]){
+                        return -1;   //can't move
+                    }
+                }
+
+                r = newr;
+                c = newc;
+                steps++;
+
+               String  key = r + "," + c;
+               while(teleportMap.containsKey(key)){
+                    if(teleportVis.contains(key)){
+                        return -2; //infinite loop
+                    }
+                    teleportVis.add(key);
+                    int[] dest = teleportMap.get(key);
+                    r = dest[0];
+                    c = dest[1];
+                    steps++;
+               }
+            }
+        }
+            
+    }
+
+
+
