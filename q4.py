@@ -38,7 +38,7 @@
 
 
 
-//java solution
+----------------java solution-----------------
 
 
 import java.util.*;
@@ -50,51 +50,52 @@ public class Yprotein {
 
         while (t-- > 0) {
             int n = sc.nextInt();
-            int[][] matrix = new int[n][n];
-
+            int[][] mat = new int[n][n];
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
-                    matrix[i][j] = sc.nextInt();
+                    mat[i][j] = sc.nextInt();
                 }
             }
 
-            int count = 0;
             int mid = n / 2;
+            // Create a boolean mask for Y-shaped positions
+            boolean[][] isY = new boolean[n][n];
 
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
-                    int shouldBe;
-
-                    // V shape
-                    if (i <= mid) {
-                        if (j == i || j == n - i - 1) {
-                            shouldBe = 1;
-                        } else {
-                            shouldBe = 0;
-                        }
+                    if ((i <= mid && (j == i || j == n - i - 1)) || (i >= mid && j == mid)) {
+                        isY[i][j] = true;
                     }
-                    //vertical line
-                    else {
-                        if (j == mid) {
-                            shouldBe = 1;
-                        } else {
-                            shouldBe = 0;
-                        }
-                    }
-
-                    if (matrix[i][j] != shouldBe) {
-                        count++;
-                    }
-
-                    matrix[i][j] = shouldBe;
                 }
             }
 
-            System.out.println("cells to change : " + count);
+            int minChanges = Integer.MAX_VALUE;
+
+            // Try all 6 (Y_state, background_state) combinations
+            for (int yState = 0; yState < 3; yState++) {
+                for (int bgState = 0; bgState < 3; bgState++) {
+                    if (yState == bgState) continue;
+
+                    int changes = 0;
+                    for (int i = 0; i < n; i++) {
+                        for (int j = 0; j < n; j++) {
+                            int expected = isY[i][j] ? yState : bgState;
+                            if (mat[i][j] != expected) {
+                                changes++;
+                                mat[i][j] = expected;
+                            }
+                        }
+                    }
+
+                    minChanges = Math.min(minChanges, changes);
+                }
+            }
+
+            System.out.println("Total changes : " +minChanges);
 
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
-                    System.out.print(matrix[i][j] + " ");
+                    System.out.print(mat[i][j] + " ");
                 }
                 System.out.println();
             }
@@ -103,4 +104,5 @@ public class Yprotein {
         sc.close();
     }
 }
+
 
