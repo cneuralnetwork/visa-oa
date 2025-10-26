@@ -16,3 +16,35 @@ elif c==b:
 	print(500*a)
 else:
 	print(100*min(a,b,c))
+
+
+
+
+--------------java solution-----------------
+
+import java.util.*;
+
+public class dice {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        while (t-- > 0) {
+            int a = sc.nextInt();
+            int b = sc.nextInt();
+            int c = sc.nextInt();
+
+            if(a==b && b==c){
+                System.out.println(1000*a);
+            }
+            else if(a==b || b==c){
+                System.out.println(500*b);
+            }
+            else if(a==c){
+                System.out.println(500*a);
+            }
+            else{
+                System.out.println(100*Math.min(a,Math.min(b,c)));
+            }
+        }
+    }
+}
