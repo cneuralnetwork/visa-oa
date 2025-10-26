@@ -35,3 +35,72 @@
 # (R = Y-pattern state, W = Background state)
 # Note: You are not expected to provide the most optimal solution, but a solution with time complexity not worse than O(n^2) will fit within the execution time limit
 
+
+
+
+//java solution
+
+
+import java.util.*;
+
+public class Yprotein {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+
+        while (t-- > 0) {
+            int n = sc.nextInt();
+            int[][] matrix = new int[n][n];
+
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    matrix[i][j] = sc.nextInt();
+                }
+            }
+
+            int count = 0;
+            int mid = n / 2;
+
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    int shouldBe;
+
+                    // V shape
+                    if (i <= mid) {
+                        if (j == i || j == n - i - 1) {
+                            shouldBe = 1;
+                        } else {
+                            shouldBe = 0;
+                        }
+                    }
+                    //vertical line
+                    else {
+                        if (j == mid) {
+                            shouldBe = 1;
+                        } else {
+                            shouldBe = 0;
+                        }
+                    }
+
+                    if (matrix[i][j] != shouldBe) {
+                        count++;
+                    }
+
+                    matrix[i][j] = shouldBe;
+                }
+            }
+
+            System.out.println("cells to change : " + count);
+
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    System.out.print(matrix[i][j] + " ");
+                }
+                System.out.println();
+            }
+        }
+
+        sc.close();
+    }
+}
+
